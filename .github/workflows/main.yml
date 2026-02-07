@@ -19,15 +19,17 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      # --- 修复核心：降级到 7.6 以获得最大兼容性 ---
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
-          gradle-version: '8.5'
-          # 强制关闭缓存，避开 GitHub 现在的服务器故障
+          gradle-version: '7.6' 
           cache-disabled: true
+      # ----------------------------------------
 
       - name: Build with Gradle
-        run: gradle assembleDebug --stacktrace
+        # 加上 --stacktrace 和 --info 让我们看清楚到底哪儿错了
+        run: gradle assembleDebug --stacktrace --info --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
