@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Study Bet</string>
+    <string name="status_idle">请选择难度开始</string>
+    <string name="status_study">正在学习中...</string>
+    <string name="status_rest">休息时间！</string>
+    <string name="difficulty_easy">轻松</string>
+    <string name="difficulty_normal">中等</string>
+    <string name="difficulty_hard">困难</string>
+</resources>
