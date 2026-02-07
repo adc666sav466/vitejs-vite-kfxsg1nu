@@ -19,16 +19,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # --- 修复核心开始 ---
-      # 强制安装 Gradle 8.5 (稳定版)，解决版本不兼容问题
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: '8.5'
-      # --- 修复核心结束 ---
+          # 强制关闭缓存，避开 GitHub 现在的服务器故障
+          cache-disabled: true
 
       - name: Build with Gradle
-        # 使用 chmod 确保即便有 gradlew 也能运行，如果没有则使用刚安装的 gradle
         run: gradle assembleDebug --stacktrace
 
       - name: Upload APK
