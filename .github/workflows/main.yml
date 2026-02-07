@@ -3,7 +3,7 @@ name: Build Android APK
 on:
   push:
     branches: [ "main" ]
-  workflow_dispatch: # 允许你手动点击按钮触发构建
+  workflow_dispatch:
 
 jobs:
   build:
@@ -18,12 +18,19 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          
-      # 因为你的截图里好像没有 gradlew 文件，我们直接用系统自带的 gradle 命令
-      - name: Build with Gradle
-        run: gradle assembleDebug --no-daemon
 
-      # 这一步最关键：把打包好的 APK 上传出来让你下载
+      # --- 修复核心开始 ---
+      # 强制安装 Gradle 8.5 (稳定版)，解决版本不兼容问题
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.5'
+      # --- 修复核心结束 ---
+
+      - name: Build with Gradle
+        # 使用 chmod 确保即便有 gradlew 也能运行，如果没有则使用刚安装的 gradle
+        run: gradle assembleDebug --stacktrace
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
